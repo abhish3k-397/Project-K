@@ -1,0 +1,99 @@
+/* Level 3 — Maze Runner — Neon Brutalist */
+.maze-level {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0a0a0a;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.maze-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 45, 111, 0.03) 2px,
+    rgba(255, 45, 111, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.maze-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+}
+
+.maze-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #ff2d6f;
+  text-shadow: 0 0 10px rgba(255, 45, 111, 0.5);
+}
+
+.maze-size {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 45, 111, 0.3);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.maze-instructions {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.25);
+  z-index: 1;
+}
+
+.maze-container {
+  position: relative;
+  border: 2px solid rgba(255, 45, 111, 0.4);
+  box-shadow: 0 0 30px rgba(255, 45, 111, 0.15);
+  z-index: 1;
+}
+
+.maze-player {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.3);
+  transition: all 0.12s ease;
+  z-index: 3;
+}
+
+.maze-player-win {
+  background: #4ade80;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.7);
+  animation: pulse 0.3s ease;
+}
+
+.maze-end {
+  position: absolute;
+  background: #ff2d6f;
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(255, 45, 111, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.maze-fog {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  transition: background 0.15s;
+}

@@ -1,0 +1,161 @@
+/* Level 5 — Word Scramble — Typewriter */
+.word-level {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: #f0e6d3;
+  position: relative;
+  padding: 20px;
+}
+
+.word-paper-texture {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.word-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.word-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #5a4a3a;
+}
+
+.word-hint-count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #8a7a6a;
+}
+
+.word-scrambled {
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+  animation: slideDown 0.5s ease;
+}
+
+.word-letter {
+  font-family: var(--font-mono);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3a2a1a;
+  width: 52px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid #3a2a1a;
+  transition: all 0.2s;
+}
+
+.word-letter-hint {
+  color: #87A878;
+  border-bottom-color: #87A878;
+}
+
+.word-input-area {
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+  animation: scaleIn 0.5s ease;
+}
+
+.word-input {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border: 2px solid #c0a080;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.6);
+  color: #3a2a1a;
+  width: 260px;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.word-input:focus {
+  border-color: #5a4a3a;
+  background: rgba(255,255,255,0.8);
+}
+
+.word-input-correct {
+  border-color: #4ade80 !important;
+  background: rgba(74, 222, 128, 0.1) !important;
+}
+
+.word-input-wrong {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  animation: shake 0.4s;
+}
+
+.word-submit {
+  font-family: var(--font-mono);
+  background: #3a2a1a;
+  color: #f0e6d3;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+
+.word-submit:hover {
+  background: #5a4a3a;
+}
+
+.word-hint-btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 8px 16px;
+  border: 1px dashed #c0a080;
+  border-radius: 4px;
+  background: transparent;
+  color: #8a7a6a;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.2s;
+}
+
+.word-hint-btn:hover:not(:disabled) {
+  border-color: #5a4a3a;
+  color: #5a4a3a;
+}
+
+.word-hint-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.word-status {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  z-index: 1;
+  min-height: 24px;
+}
+
+.word-status-win { color: #4ade80; }
+.word-status-fail { color: #C4675C; }

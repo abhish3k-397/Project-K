@@ -1,0 +1,98 @@
+/* Level 13 — Tile Slide — Wabi-Sabi */
+.slide-level {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: linear-gradient(165deg, #d4c5a9 0%, #c4b394 50%, #b0a080 100%);
+  position: relative;
+  padding: 20px;
+}
+
+.slide-texture {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.slide-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.slide-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: #5a4a35;
+  font-style: italic;
+}
+
+.slide-moves {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #8a7a5a;
+}
+
+.slide-timer-wrap {
+  width: min(360px, 80%);
+  z-index: 1;
+}
+
+.slide-level .level-timer {
+  background: rgba(0,0,0,0.08);
+}
+
+.slide-level .level-timer-fill {
+  background: #8a7a5a;
+}
+
+.slide-grid {
+  display: grid;
+  gap: 4px;
+  width: min(360px, 85%);
+  z-index: 1;
+  animation: scaleIn 0.5s ease;
+  background: rgba(0,0,0,0.1);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.slide-tile {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e8dcc8, #d4c5a9);
+  color: #3a2a15;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.slide-tile:hover:not(.slide-empty) {
+  transform: scale(1.03);
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+}
+
+.slide-tile.slide-empty {
+  background: rgba(0,0,0,0.08);
+  box-shadow: inset 1px 2px 4px rgba(0,0,0,0.1);
+  cursor: default;
+}
+
+.slide-grid.slide-solved .slide-tile:not(.slide-empty) {
+  background: linear-gradient(135deg, #c8e0b4, #a8c894);
+  color: #2a4a15;
+  animation: pulse 0.4s ease;
+}

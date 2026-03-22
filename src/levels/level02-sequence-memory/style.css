@@ -1,0 +1,108 @@
+/* Level 2 — Sequence Memory — Deep Ocean Bioluminescent */
+.seq-mem-level {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: linear-gradient(180deg, #030820 0%, #0a1628 40%, #0d1f3c 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.seq-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.seq-bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 200, 255, 0.3), transparent);
+  animation: seqBubbleRise 8s ease-in infinite;
+}
+
+@keyframes seqBubbleRise {
+  0% { bottom: -20px; opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.2; }
+  100% { bottom: 110%; opacity: 0; }
+}
+
+.seq-status {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: rgba(0, 200, 255, 0.8);
+  text-transform: uppercase;
+  z-index: 1;
+  animation: slideDown 0.5s ease;
+  text-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+}
+
+.seq-counter {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  z-index: 1;
+}
+
+.seq-grid {
+  display: grid;
+  gap: 10px;
+  width: min(340px, 85%);
+  z-index: 1;
+  animation: scaleIn 0.6s ease;
+}
+
+.seq-tile {
+  aspect-ratio: 1;
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(0, 200, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.seq-tile:hover {
+  background: rgba(0, 200, 255, 0.08);
+  border-color: rgba(0, 200, 255, 0.3);
+}
+
+.seq-tile.seq-active {
+  background: radial-gradient(circle, rgba(0, 220, 255, 0.6), rgba(0, 150, 255, 0.3));
+  border-color: rgba(0, 220, 255, 0.8);
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.4), inset 0 0 15px rgba(0, 200, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.seq-tile.seq-pressed {
+  background: radial-gradient(circle, rgba(0, 220, 255, 0.4), rgba(0, 150, 255, 0.2));
+  border-color: rgba(0, 200, 255, 0.5);
+  transform: scale(0.95);
+}
+
+.seq-tile.seq-success {
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.4), rgba(74, 222, 128, 0.1));
+  border-color: rgba(74, 222, 128, 0.6);
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+}
+
+.seq-tile.seq-wrong {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.5), rgba(239, 68, 68, 0.2));
+  border-color: rgba(239, 68, 68, 0.7);
+  animation: shake 0.4s;
+}
+
+.seq-tile.seq-reveal {
+  background: radial-gradient(circle, rgba(0, 220, 255, 0.3), transparent);
+  border-color: rgba(0, 200, 255, 0.4);
+}

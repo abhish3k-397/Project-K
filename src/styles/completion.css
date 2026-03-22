@@ -1,0 +1,465 @@
+/* ===== COMPLETION SCREEN ===== */
+
+/* Canvas + overlay */
+.comp-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#completion-screen {
+  background: radial-gradient(ellipse at center, rgba(10, 10, 15, 0.92), rgba(10, 10, 15, 0.98));
+  backdrop-filter: blur(8px);
+  z-index: 50;
+}
+
+#completion-screen.comp-fading {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* --- SHARED --- */
+.comp-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* =====================
+   SUBLEVEL CLEARED
+   ===================== */
+
+/* Radial burst ring behind checkmark */
+.comp-burst-ring {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.15) 0%, transparent 70%);
+  animation: compBurstExpand 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes compBurstExpand {
+  from { width: 40px; height: 40px; opacity: 0.8; }
+  to { width: 220px; height: 220px; opacity: 0; }
+}
+
+/* Animated checkmark */
+.comp-checkmark-wrap {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  animation: compCheckPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes compCheckPop {
+  from { transform: scale(0) rotate(-45deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.comp-checkmark {
+  width: 100%;
+  height: 100%;
+}
+
+.comp-checkmark-circle {
+  stroke: #4ade80;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: compCircleDraw 0.6s ease 0.2s forwards;
+}
+
+@keyframes compCircleDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+.comp-checkmark-check {
+  stroke: #4ade80;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: compCheckDraw 0.4s ease 0.5s forwards;
+}
+
+@keyframes compCheckDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Labels */
+.comp-cleared-label {
+  font-family: var(--font-primary);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: #4ade80;
+  text-shadow: 0 0 30px rgba(74, 222, 128, 0.4);
+  animation: slideUp 0.4s ease 0.3s both;
+  margin-bottom: 6px;
+}
+
+.comp-sub-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  animation: slideUp 0.4s ease 0.4s both;
+  margin-bottom: 18px;
+}
+
+.comp-sub-sep { opacity: 0.3; }
+
+.comp-sub-diff {
+  color: var(--color-warning);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Score burst */
+.comp-score-burst {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  animation: compScorePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+  margin-bottom: 22px;
+}
+
+@keyframes compScorePop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.comp-plus {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.comp-score-val {
+  font-family: var(--font-mono);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #f59e0b;
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+/* Progress pips (1 → 2 → 3) */
+.comp-progress {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  animation: fadeIn 0.4s ease 0.6s both;
+  margin-bottom: 18px;
+}
+
+.comp-pip {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.comp-pip span {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.comp-pip svg {
+  width: 16px;
+  height: 16px;
+  color: #4ade80;
+}
+
+.comp-pip-done {
+  border-color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.comp-pip-current {
+  animation: compPipGlow 1.5s ease infinite;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+}
+
+@keyframes compPipGlow {
+  0%, 100% { box-shadow: 0 0 16px rgba(74, 222, 128, 0.35); }
+  50% { box-shadow: 0 0 28px rgba(74, 222, 128, 0.55); }
+}
+
+.comp-pip-line {
+  width: 28px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.comp-pip-done + .comp-pip-line {
+  background: rgba(74, 222, 128, 0.3);
+}
+
+/* Next hint */
+.comp-next-hint {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  animation: fadeIn 0.4s ease 0.8s both;
+}
+
+.comp-next-hint strong {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+
+/* =====================
+   LEVEL COMPLETE
+   ===================== */
+
+/* Background glow */
+.comp-level-glow {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 99, 255, 0.12) 0%, rgba(168, 85, 247, 0.06) 40%, transparent 70%);
+  animation: compGlowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes compGlowPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+  50% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+}
+
+/* Level badge */
+.comp-level-badge-wrap {
+  position: relative;
+  margin-bottom: 20px;
+  animation: compBadgeDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+@keyframes compBadgeDrop {
+  from { transform: translateY(-40px) scale(0.6); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.comp-level-badge {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comp-level-badge-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: conic-gradient(from 0deg, #6c63ff, #a855f7, #ec4899, #f43f5e, #f59e0b, #4ade80, #38bdf8, #6c63ff) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  animation: compRingSpin 4s linear infinite;
+}
+
+@keyframes compRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+.comp-level-badge-inner {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(108, 99, 255, 0.2);
+}
+
+.comp-level-badge-num {
+  font-family: var(--font-primary);
+  font-size: 2.4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #6c63ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comp-level-crown {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  animation: compCrownBounce 1s ease 0.6s both;
+  filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.4));
+}
+
+@keyframes compCrownBounce {
+  0% { transform: translateX(-50%) translateY(-20px) scale(0); }
+  60% { transform: translateX(-50%) translateY(3px) scale(1.1); }
+  100% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* Level complete title */
+.comp-level-title {
+  font-family: var(--font-primary);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--color-text);
+  text-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+  animation: slideUp 0.4s ease 0.4s both;
+  margin-bottom: 4px;
+}
+
+.comp-level-name-cleared {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  letter-spacing: 2px;
+  animation: slideUp 0.4s ease 0.5s both;
+  margin-bottom: 20px;
+}
+
+/* Stats card */
+.comp-stats-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 18px 28px;
+  animation: compCardSlide 0.5s ease 0.6s both;
+  margin-bottom: 24px;
+}
+
+@keyframes compCardSlide {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.comp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 70px;
+}
+
+.comp-stat-icon {
+  font-size: 1.2rem;
+}
+
+.comp-stat-val {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.comp-stat-label {
+  font-family: var(--font-primary);
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.comp-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Next level preview */
+.comp-next-level-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: compNextFade 0.5s ease 0.9s both;
+}
+
+@keyframes compNextFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.comp-next-label {
+  font-family: var(--font-primary);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+}
+
+.comp-next-num {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--color-accent);
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.comp-next-name {
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.comp-next-hint-text {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+  .comp-stats-card {
+    padding: 14px 16px;
+    gap: 14px;
+  }
+  .comp-stat { min-width: 54px; }
+  .comp-stat-val { font-size: 1.1rem; }
+  .comp-score-val { font-size: 1.8rem; }
+  .comp-level-badge { width: 80px; height: 80px; }
+  .comp-level-badge-inner { width: 66px; height: 66px; }
+  .comp-level-badge-num { font-size: 1.8rem; }
+}
